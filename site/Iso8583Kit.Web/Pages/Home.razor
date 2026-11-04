@@ -1,0 +1,106 @@
+@page "/"
+
+<PageTitle>Iso8583Kit · Read an ISO 8583 card message</PageTitle>
+
+<section class="hero">
+  <h1>What does this <span class="hl">card message</span> say?</h1>
+  <p class="lead">Paste an ISO 8583 message, as a terminal, ATM or switch sends it, in hexadecimal or as text. Every field is explained: the message type, amounts, how the card was read, the response code and the EMV chip data. Card numbers are masked, and track data and PIN blocks are never shown.</p>
+</section>
+
+<div class="grid">
+  <section class="card inputs" aria-label="Message">
+    <div class="field">
+      <label for="msg">The message (hexadecimal, or ASCII text)</label>
+      <textarea id="msg" rows="9" spellcheck="false" @bind="input" @bind:event="oninput" @bind:after="Read"></textarea>
+      <p class="hint">Use test card numbers only. This page reads the message in your browser and sends nothing anywhere.</p>
+    </div>
+    <label class="window">Layout
+      <select @bind="layout" @bind:after="Read">
+        <option value="auto">work it out</option>
+        <option value="ascii">ASCII, hex bitmap</option>
+        <option value="ascii-binary">ASCII, binary bitmap</option>
+        <option value="bcd">BCD, binary bitmap</option>
+      </select></label>
+    <div class="examples" aria-label="Examples">
+      <span class="hint">Examples:</span>
+      @foreach (var ex in Examples)
+      {
+        <button type="button" class="chip" @onclick="() => Use(ex.Text)">@ex.Label</button>
+      }
+    </div>
+  </section>
+
+  <section class="card results" aria-live="polite">
+    @if (result is null)
+    {
+      <p class="hint">Paste a message or pick an example.</p>
+    }
+    else
+    {
+      var m = result.Message;
+      var errors = issues.Count(i => i.IsError);
+      <div class="verdict @(m is null || errors > 0 ? "bad" : "ok")">
+        <strong>@(m is null ? "This message can't be read" : errors > 0 ? $"Read, with {errors} problem{(errors == 1 ? "" : "s")}" : "A well-formed message")</strong>
+        <span>@(m is null ? "See below for where it goes wrong." : $"{m.Mti}: {Explain.Mti(m.Mti)}. Layout: {encoding.Name}.")</span>
+      </div>
+      @if (m is not null)
+      {
+        <div class="table-wrap">
+          <table class="fields">
+            <thead><tr><th>Field</th><th>Name</th><th>Value</th></tr></thead>
+            <tbody>
+              @foreach (var (n, v) in m.Fields)
+              {
+                var def = Spec[n];
+                var meaning = def?.Sensitivity is Sensitivity.None or Sensitivity.Pan ? Explain.Field(n, v, m) : null;
+                <tr>
+                  <td class="num">@n</td>
+                  <td>@(def?.Name ?? "(not defined)")</td>
+                  <td class="val"><code>@Rules.Display(def, v)</code>@if (meaning is not null) { <span class="meaning">@meaning</span> }</td>
+                </tr>
+                @if (n == 55)
+                {
+                  @foreach (var t in Emv.Parse(v).Tags)
+                  {
+                    <tr class="sub"><td class="num">@t.Tag</td><td>@t.Name</td><td class="val"><code>@t.Value</code></td></tr>
+                  }
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      @if (issues.Count > 0)
+      {
+        <h2>Problems <span class="count">@issues.Count</span></h2>
+        <ul class="lines">
+          @foreach (var i in issues)
+          {
+            <li class="@(i.IsError ? "bank" : "question")"><span class="amt">@(i.IsError ? "error" : "warning")</span><span class="what"><b>@i.Code</b>@(i.Field is int f ? $" · field {f}" : "")@(i.Offset is int o ? $" · byte {o}" : "")</span><span class="why-small">@i.Message</span></li>
+          }
+        </ul>
+      }
+      @if (m is not null && reply is not null)
+      {
+        <h2>What a host would answer</h2>
+        <p class="hint">From the built-in simulator, which approves by rules (and by test amounts: an amount ending in .51 declines with 51), not by checking any account: @replyReason.</p>
+        <div class="table-wrap">
+          <table class="fields">
+            <tbody>
+              <tr><td class="num">MTI</td><td>@Explain.Mti(reply.Mti)</td><td class="val"><code>@reply.Mti</code></td></tr>
+              @foreach (var (n, v) in reply.Fields.Where(f => f.Key is 38 or 39))
+              {
+                <tr><td class="num">@n</td><td>@Spec[n]?.Name</td><td class="val"><code>@v</code>@if (Explain.Field(n, v, reply) is string e) { <span class="meaning">@e</span> }</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </section>
+</div>
+
+<section class="explain">
+  <h2>About ISO 8583</h2>
+  <p>ISO 8583 is the message format behind most card payments and ATM withdrawals. A message starts with a four-digit type (0200 is a purchase or withdrawal request, 0210 its answer), then a bitmap saying which of 128 numbered fields follow. Networks and hosts each lay messages out a little differently, so the same purchase can look quite different in bytes; this page tries the common layouts.</p>
+</section>

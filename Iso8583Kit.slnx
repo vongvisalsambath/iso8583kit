@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Iso8583Kit/Iso8583Kit.csproj" />
+    <Project Path="src/Iso8583Kit.Cli/Iso8583Kit.Cli.csproj" />
+  </Folder>
+  <Folder Name="/site/">
+    <Project Path="site/Iso8583Kit.Web/Iso8583Kit.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Iso8583Kit.Tests/Iso8583Kit.Tests.csproj" />
+  </Folder>
+</Solution>

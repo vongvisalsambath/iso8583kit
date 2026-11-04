@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iso8583Kit · Read an ISO 8583 card message</title>
+  <meta name="description" content="Paste an ISO 8583 card message (ASCII, hex or BCD) and see every field explained: the MTI, processing code, amounts, entry mode, response code and EMV chip data, with card numbers masked. Runs in your browser; nothing is uploaded." />
+  <meta name="theme-color" content="#7a3fd1" />
+  <meta name="referrer" content="no-referrer" />
+  <base href="/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/"><img src="favicon.svg" alt="" width="24" height="24" />Iso8583Kit</a>
+    <p class="tag">Read ISO 8583 card messages. Runs in your browser; nothing is uploaded.</p>
+    <nav><a href="https://github.com/vongvisalsambath/iso8583kit">GitHub</a></nav>
+  </header>
+  <main id="app">
+    <p class="loading">Loading…</p>
+    <noscript><p class="loading">This page needs JavaScript and WebAssembly.</p></noscript>
+  </main>
+  <div id="blazor-error-ui" role="alert">Something went wrong. <a href="/" class="reload">Reload</a></div>
+  <footer class="foot">
+    <span>Iso8583Kit · open source (Apache-2.0) · by Vong Visalsambath</span>
+    <span>Examples use the card networks' public test numbers.</span>
+  </footer>
+  <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

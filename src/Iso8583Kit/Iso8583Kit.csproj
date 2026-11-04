@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Iso8583Kit</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Vong Visalsambath</Authors>
+    <Description>Read, write, check and explain ISO 8583 card messages (1987): ASCII and binary/BCD encodings, field-by-field explanations, EMV chip data, and card numbers, track data and PIN blocks masked everywhere. Includes a host simulator for testing.</Description>
+    <PackageTags>iso8583;payments;cards;emv;atm;pos;acquiring;banking</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/vongvisalsambath/iso8583kit</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Iso8583Kit.Tests" />
+  </ItemGroup>
+</Project>
