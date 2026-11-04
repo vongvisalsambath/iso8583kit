@@ -77,14 +77,14 @@ const squash = s => (s || "").replace(/\s+/g, " ").trim();
       const { ctx, p, done } = await open();
       for (const [name, text] of [
         ["markup", "0200<img src=x onerror=alert(1)><script>alert(2)</script>"],
-        ["control characters", "0200\u001b[2J‮\u0000"],
+        ["control characters", "0200\u001b[2J\u202E\u0000"],
         ["a huge input", "30".repeat(30000)],
         ["a field claiming 999 bytes", "02000000000000000100999"],
       ]) {
         await setText(p, text);
         const injected = await p.evaluate(() => document.querySelectorAll(".results img, .results script").length);
         const visible = await results(p);
-        check(injected === 0 && !/[\u0000-\u0008\u001b‮]/.test(visible) && (await p.locator(".verdict").count()) === 1, "hostile input: " + name, visible.slice(0, 120));
+        check(injected === 0 && !/[\u0000-\u0008\u001b\u202E]/.test(visible) && (await p.locator(".verdict").count()) === 1, "hostile input: " + name, visible.slice(0, 120));
       }
       const issues = await done();
       check(issues.length === 0, "hostile input: no errors, dialogs or outside requests", issues.join(" | "));
