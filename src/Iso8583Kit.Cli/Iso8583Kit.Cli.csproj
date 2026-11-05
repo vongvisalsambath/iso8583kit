@@ -6,6 +6,8 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>iso8583</ToolCommandName>
     <PackageId>Iso8583Kit.Cli</PackageId>
+    <PackageProjectUrl>https://iso8583kit.vercel.app</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>0.1.0</Version>
     <Authors>Vong Visalsambath</Authors>
     <Description>Read, build and send ISO 8583 messages, and run a simulated card host for testing.</Description>
@@ -15,5 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="../Iso8583Kit/Iso8583Kit.csproj" />
     <InternalsVisibleTo Include="Iso8583Kit.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>

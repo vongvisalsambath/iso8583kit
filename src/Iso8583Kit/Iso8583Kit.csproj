@@ -3,6 +3,8 @@
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Iso8583Kit</PackageId>
+    <PackageProjectUrl>https://iso8583kit.vercel.app</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>0.1.0</Version>
     <Authors>Vong Visalsambath</Authors>
     <Description>Read, write, check and explain ISO 8583 card messages (1987): ASCII and binary/BCD encodings, field-by-field explanations, EMV chip data, and card numbers, track data and PIN blocks masked everywhere. Includes a host simulator for testing.</Description>
@@ -12,5 +14,8 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Iso8583Kit.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>
