@@ -23,6 +23,15 @@ MTI 0200: financial (moves money) request from the acquirer (1987 version)
    …
 ```
 
+## Install
+
+On NuGet: [Iso8583Kit](https://www.nuget.org/packages/Iso8583Kit) · [Iso8583Kit.Cli](https://www.nuget.org/packages/Iso8583Kit.Cli). For .NET 8 and .NET 10.
+
+```sh
+dotnet add package Iso8583Kit
+dotnet tool install --global Iso8583Kit.Cli   # the `iso8583` command
+```
+
 ## Library
 
 ```csharp
